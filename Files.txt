@@ -1,0 +1,1651 @@
+shiftregistrer.vhd Thu Aug 24 15:55:24 2023
+Page 1
+1 ----------------------------------------------------------------------------------
+2 -- Company: 
+3 -- Engineer: 
+4 -- 
+5 -- Create Date: 15:20:40 08/24/2023 
+6 -- Design Name: 
+7 -- Module Name: shiftregistrer - Behavioral 
+8 -- Project Name: 
+9 -- Target Devices: 
+10 -- Tool versions: 
+11 -- Description: 
+12 --
+13 -- Dependencies: 
+14 --
+15 -- Revision: 
+16 -- Revision 0.01 - File Created
+17 -- Additional Comments: 
+18 --
+19 ----------------------------------------------------------------------------------
+20 library IEEE;
+21 use IEEE.STD_LOGIC_1164.ALL;
+22 
+23 -- Uncomment the following library declaration if using
+24 -- arithmetic functions with Signed or Unsigned values
+25 --use IEEE.NUMERIC_STD.ALL;
+26 
+27 -- Uncomment the following library declaration if instantiating
+28 -- any Xilinx primitives in this code.
+29 --library UNISIM;
+30 --use UNISIM.VComponents.all;
+31 
+32 entity shiftregistrer is
+33 Port ( s : in STD_LOGIC_VECTOR (3 downto 0);
+34 m : in STD_LOGIC_VECTOR (1 downto 0);
+35 y : out STD_LOGIC_VECTOR (3 downto 0);
+36 clk : in STD_LOGIC;
+37 rst : in STD_LOGIC);
+38 end shiftregistrer;
+39 
+40 architecture Behavioral of shiftregistrer is
+41 signal t : std_logic_vector(3 downto 0);
+42 begin
+43 process(clk,rst)
+44 begin
+45 if rst='1' then
+46 y<="0000";
+47 elsif clk' event and clk ='1' then
+48 case m is
+49 
+50 when "00" =>
+51 t(3)<=s(0);
+52 t(2)<=t(3);
+53 t(1)<=t(2);
+54 t(0)<=t(1);
+55 y(0)<=t(0);
+56 
+57 when "01" =>
+shiftregistrer.vhd Thu Aug 24 15:55:24 2023
+Page 2
+58 t(3)<=s(0);
+59 t(2)<=t(3);
+60 t(1)<=t(2);
+61 t(0)<=t(1);
+62 y<=t;
+63 
+64 when "10" =>
+65 t<=s;
+66 y<=t;
+67 
+68 when "11" =>
+69 t<=s;
+70 t(2)<=t(3);
+71 t(1)<=t(2);
+72 t(0)<=t(1);
+73 y(3)<=t(0);
+74 
+75 when others => NULL;
+76 
+77 end case;
+78 end if;
+79 end process;
+80 
+81 end Behavioral;
+82 
+83 
+0 ns 200 ns 400 ns 600 ns 800 ns
+fde
+C
+CE
+D Q
+shiftregistrer:1
+shiftregistrer
+m(1:0)
+s(3:0)
+clk
+rst
+y(3:0)
+inv
+rst_inv_imp_rst_inv1
+I O fde
+C
+CE
+D Q MUX:1
+Mmux_t_0_mux00011
+port_select
+port_result Data(3:0) MUX:2
+Mmux_t_1_mux00011
+port_select
+port_result Data(3:0) MUX:3
+Mmux_t_2_mux00011
+port_select
+port_result Data(3:0) MUX:4
+Mmux_t_3_mux00011
+port_select
+port_result Data(3:0) MUX:5
+Mmux_y_0_mux00001
+port_select
+port_result Data(3:0) MUX:6
+Mmux_y_1_mux00001
+port_select
+port_result Data(3:0) MUX:7
+Mmux_y_2_mux00001
+port_select
+port_result Data(3:0) MUX:8
+Mmux_y_3_mux00001
+port_select
+port_result Data(3:0) fdc
+C
+CLR
+D Q
+shiftregistrer:1
+shiftregistrer
+m(1:0)
+s(3:0)
+clk
+rst
+y(3:0)
+
+shiftregisterclk.vhd Thu Aug 24 16:15:26 2023
+Page 1
+1 --------------------------------------------------------------------------------
+2 -- Company: 
+3 -- Engineer:
+4 --
+5 -- Create Date: 15:42:20 08/24/2023
+6 -- Design Name: 
+7 -- Module Name: C:/Users/ETC-VLSI 
+LAB/Downloads/Xilinx_ISE_DS_14.7_1015_1_2/shiftregister/shiftregisterclk.vhd
+8 -- Project Name: shiftregister
+9 -- Target Device: 
+10 -- Tool versions: 
+11 -- Description: 
+12 -- 
+13 -- VHDL Test Bench Created by ISE for module: shiftregistrer
+14 -- 
+15 -- Dependencies:
+16 -- 
+17 -- Revision:
+18 -- Revision 0.01 - File Created
+19 -- Additional Comments:
+20 --
+21 -- Notes: 
+22 -- This testbench has been automatically generated using types std_logic and
+23 -- std_logic_vector for the ports of the unit under test. Xilinx recommends
+24 -- that these types always be used for the top-level I/O of a design in order
+25 -- to guarantee that the testbench will bind correctly to the post-implementation 
+26 -- simulation model.
+27 --------------------------------------------------------------------------------
+28 LIBRARY ieee;
+29 USE ieee.std_logic_1164.ALL;
+30 
+31 -- Uncomment the following library declaration if using
+32 -- arithmetic functions with Signed or Unsigned values
+33 --USE ieee.numeric_std.ALL;
+34 
+35 ENTITY shiftregisterclk IS
+36 END shiftregisterclk;
+37 
+38 ARCHITECTURE behavior OF shiftregisterclk IS
+39 
+40 -- Component Declaration for the Unit Under Test (UUT)
+41 
+42 COMPONENT shiftregistrer
+43 PORT(
+44 s : IN std_logic_vector(3 downto 0);
+45 m : IN std_logic_vector(1 downto 0);
+46 y : OUT std_logic_vector(3 downto 0);
+47 clk : IN std_logic;
+48 rst : IN std_logic
+49 );
+50 END COMPONENT;
+51 
+52 
+53 --Inputs
+54 signal s : std_logic_vector(3 downto 0) := (others => '0');
+55 signal m : std_logic_vector(1 downto 0) := (others => '0');
+56 signal clk : std_logic := '0';
+shiftregisterclk.vhd Thu Aug 24 16:15:26 2023
+Page 2
+57 signal rst : std_logic := '0';
+58 
+59 --Outputs
+60 signal y : std_logic_vector(3 downto 0);
+61 
+62 -- Clock period definitions
+63 constant clk_period : time := 10 ns;
+64 
+65 BEGIN
+66 
+67 -- Instantiate the Unit Under Test (UUT)
+68 uut: shiftregistrer PORT MAP (
+69 s => s,
+70 m => m,
+71 y => y,
+72 clk => clk,
+73 rst => rst
+74 );
+75 
+76 -- Clock process definitions
+77 clk_process :process
+78 begin
+79 clk <= '1';
+80 wait for clk_period/2;
+81 clk <= '0';
+82 wait for clk_period/2;
+83 end process;
+84 
+85 
+86 -- Stimulus process
+87 stim_proc: process
+88 begin
+89 -- hold reset state for 100 ns.
+90 rst<='1';
+91 wait for 10 ns;
+92 rst<='0';
+93 m<="00";
+94 s<="0001";
+95 wait for 80 ns;
+96 s<="1110";
+97 wait for 80 ns;
+98 s<="0000";
+99 wait for 80 ns;
+100 
+101 m<="01";
+102 s<="0001";
+103 wait for 80 ns;
+104 s<="1110";
+105 wait for 80 ns;
+106 s<="0000";
+107 wait for 80 ns;
+108 
+109 m<="10";
+110 s<="0001";
+111 wait for 80 ns;
+112 s<="1110";
+113 wait for 80 ns;
+shiftregisterclk.vhd Thu Aug 24 16:15:27 2023
+Page 3
+114 s<="0000";
+115 wait for 80 ns;
+116 
+117 m<="11";
+118 s<="0001";
+119 wait for 80 ns;
+120 s<="1110";
+121 wait for 80 ns;
+122 s<="0000";
+123 wait for 80 ns;
+124 
+125 
+126 --wait for clk_period*10;
+127 
+128 -- insert stimulus here 
+129 
+130 wait;
+131 end process;
+132 
+133 END;
+134 
+alu_test.vhd Thu Aug 17 15:49:41 2023
+Page 1
+1 --------------------------------------------------------------------------------
+2 -- Company: 
+3 -- Engineer:
+4 --
+5 -- Create Date: 15:30:50 08/17/2023
+6 -- Design Name: 
+7 -- Module Name: C:/Users/ETC-VLSI LAB/Downloads/Xilinx_ISE_DS_14.7_1015_1_2/New 
+folder/alu_D1/alu_test.vhd
+8 -- Project Name: alu_D1
+9 -- Target Device: 
+10 -- Tool versions: 
+11 -- Description: 
+12 -- 
+13 -- VHDL Test Bench Created by ISE for module: modecalci
+14 -- 
+15 -- Dependencies:
+16 -- 
+17 -- Revision:
+18 -- Revision 0.01 - File Created
+19 -- Additional Comments:
+20 --
+21 -- Notes: 
+22 -- This testbench has been automatically generated using types std_logic and
+23 -- std_logic_vector for the ports of the unit under test. Xilinx recommends
+24 -- that these types always be used for the top-level I/O of a design in order
+25 -- to guarantee that the testbench will bind correctly to the post-implementation 
+26 -- simulation model.
+27 --------------------------------------------------------------------------------
+28 LIBRARY ieee;
+29 USE ieee.std_logic_1164.ALL;
+30 
+31 -- Uncomment the following library declaration if using
+32 -- arithmetic functions with Signed or Unsigned values
+33 --USE ieee.numeric_std.ALL;
+34 
+35 ENTITY alu_test IS
+36 END alu_test;
+37 
+38 ARCHITECTURE behavior OF alu_test IS
+39 
+40 -- Component Declaration for the Unit Under Test (UUT)
+41 
+42 COMPONENT modecalci
+43 PORT(
+44 a : IN std_logic_vector(2 downto 0);
+45 b : IN std_logic_vector(2 downto 0);
+46 mode : IN std_logic_vector(2 downto 0);
+47 y : OUT std_logic_vector(2 downto 0)
+48 );
+49 END COMPONENT;
+50 
+51 
+52 --Inputs
+53 signal a : std_logic_vector(2 downto 0) := (others => '0');
+54 signal b : std_logic_vector(2 downto 0) := (others => '0');
+55 signal mode : std_logic_vector(2 downto 0) := (others => '0');
+56 
+alu_test.vhd Thu Aug 17 15:49:41 2023
+Page 2
+57 --Outputs
+58 signal y : std_logic_vector(2 downto 0);
+59 -- No clocks detected in port list. Replace <clock> below with 
+60 -- appropriate port name 
+61 
+62 BEGIN
+63 
+64 -- Instantiate the Unit Under Test (UUT)
+65 uut: modecalci PORT MAP (
+66 a => a,
+67 b => b,
+68 mode => mode,
+69 y => y
+70 );
+71 
+72 -- Stimulus process
+73 stim_proc: process
+74 begin
+75 a<="001";
+76 b<="010";
+77 mode<="000";
+78 wait for 10 ns;
+79 mode<="001";
+80 wait for 10 ns;
+81 mode<="010";
+82 wait for 10 ns;
+83 mode<="011";
+84 wait for 10 ns;
+85 mode<="100";
+86 wait for 10 ns;
+87 mode<="111";
+88 wait for 10 ns;
+89 
+90 
+91 
+92 -- hold reset state for 100 ns.
+93 wait for 100 ns;
+94 
+95 wait;
+96 end process;
+97 
+98 END;
+99 
+alu_D1.vhd Thu Aug 17 15:48:55 2023
+Page 1
+1 ----------------------------------------------------------------------------------
+2 -- Company: 
+3 -- Engineer: 
+4 -- 
+5 -- Create Date: 15:07:53 08/17/2023 
+6 -- Design Name: 
+7 -- Module Name: modecalci - Behavioral 
+8 -- Project Name: 
+9 -- Target Devices: 
+10 -- Tool versions: 
+11 -- Description: 
+12 --
+13 -- Dependencies: 
+14 --
+15 -- Revision: 
+16 -- Revision 0.01 - File Created
+17 -- Additional Comments: 
+18 --
+19 ----------------------------------------------------------------------------------
+20 library IEEE;
+21 use IEEE.STD_LOGIC_1164.ALL;
+22 
+23 -- Uncomment the following library declaration if using
+24 -- arithmetic functions with Signed or Unsigned values
+25 --use IEEE.NUMERIC_STD.ALL;
+26 
+27 -- Uncomment the following library declaration if instantiating
+28 -- any Xilinx primitives in this code.
+29 --library UNISIM;
+30 --use UNISIM.VComponents.all;
+31 
+32 entity modecalci is
+33 Port ( a : in STD_LOGIC_VECTOR (2 downto 0);
+34 b : in STD_LOGIC_VECTOR (2 downto 0);
+35 mode : in STD_LOGIC_VECTOR (2 downto 0);
+36 y : out STD_LOGIC_VECTOR (2 downto 0));
+37 end modecalci;
+38 
+39 architecture Behavioral of modecalci is
+40 
+41 begin
+42 process(a,b,mode)
+43 begin
+44 case mode is
+45 when"000" =>y<= NOT a;
+46 when"001" =>y<=a AND b;
+47 when"010" =>y<=a OR b;
+48 when"111" =>y<=a NOR b;
+49 when"011" =>y<=a XOR b;
+50 when"100" =>y<=a NAND b;
+51 when others =>null;
+52 end case;
+53 end process;
+54 end Behavioral;
+55 
+56 
+57 
+ALU_D1_NEW.ucf Thu Aug 17 16:32:22 2023
+Page 1
+1 NET "a<0>" LOC ="N3";
+2 NET "a<1>" LOC ="E2";
+3 NET "b<0>" LOC ="G3";
+4 NET "b<1>" LOC ="B4";
+5 NET "mode<0>" LOC ="L3";
+6 NET "mode<1>" LOC ="P11";
+7 NET "y<0>" LOC ="G1";
+8 NET "y<1>" LOC ="P4";
+9 
+and2
+I0
+I1
+O or2
+I0
+I1
+O LPM_XOR2_3
+Mxor_y_xor0000
+Data(0)
+Data(1)
+Data(2)
+Data(3)
+Data(4)
+Data(5)
+Result(0)
+Result(1)
+Result(2) and3b3
+y_cmp_eq0000_imp_y_cmp_eq00001
+I0
+I1
+I2
+O and3b2
+I0
+I1
+I2
+O and3
+y_cmp_eq0003_imp_y_cmp_eq00031
+I0
+I1
+I2
+O and3b1
+I0
+I1
+I2
+Oor2
+y_or0001_imp_y_or00011
+I0
+I1
+O
+y_mux0000<2>_imp
+y_mux0000<2>_imp
+a(2)
+y_and0000(2)
+y_or0000(2)
+y_xor0000(2)
+y_cmp_eq0000
+y_cmp_eq0001
+y_cmp_eq0002
+y_cmp_eq0003
+y_cmp_eq0004
+y_cmp_eq0005
+y_mux0000(2) y_mux0000<1>_imp
+y_mux0000<1>_imp
+a(1)
+y_and0000(1)
+y_or0000(1)
+y_xor0000(1)
+y_cmp_eq0000
+y_cmp_eq0001
+y_cmp_eq0002
+y_cmp_eq0003
+y_cmp_eq0004
+y_cmp_eq0005
+y_mux0000(1)
+y_mux0000<0>_imp
+y_mux0000<0>_imp
+a(0)
+y_and0000(0)
+y_or0000(0)
+y_xor0000(0)
+y_cmp_eq0000
+y_cmp_eq0001
+y_cmp_eq0002
+y_cmp_eq0003
+y_cmp_eq0004
+y_cmp_eq0005
+y_mux0000(0)
+inv
+y_not0001_imp_y_not00011
+I O
+LPM_LATCH_1
+y
+D(2:0)
+Gate
+Q(2:0) modecalci:1
+modecalci
+a(2:0)
+b(2:0)
+mode(2:0)
+y(2:0)
+0 ns 200 ns 400 ns 600 ns 800 ns
+
+
+
+
+
+
+
+
+
+
+
+
+
+testFIFO.vhd Thu Sep 21 16:00:54 2023
+Page 1
+1 --------------------------------------------------------------------------------
+2 -- Company: 
+3 -- Engineer:
+4 --
+5 -- Create Date: 15:51:06 09/21/2023
+6 -- Design Name: 
+7 -- Module Name: C:/Users/ETC-VLSI LAB/Desktop/vlsi/FIFO/testFIFO.vhd
+8 -- Project Name: FIFO
+9 -- Target Device: 
+10 -- Tool versions: 
+11 -- Description: 
+12 -- 
+13 -- VHDL Test Bench Created by ISE for module: fifo_ent
+14 -- 
+15 -- Dependencies:
+16 -- 
+17 -- Revision:
+18 -- Revision 0.01 - File Created
+19 -- Additional Comments:
+20 --
+21 -- Notes: 
+22 -- This testbench has been automatically generated using types std_logic and
+23 -- std_logic_vector for the ports of the unit under test. Xilinx recommends
+24 -- that these types always be used for the top-level I/O of a design in order
+25 -- to guarantee that the testbench will bind correctly to the post-implementation 
+26 -- simulation model.
+27 --------------------------------------------------------------------------------
+28 LIBRARY ieee;
+29 USE ieee.std_logic_1164.ALL;
+30 
+31 -- Uncomment the following library declaration if using
+32 -- arithmetic functions with Signed or Unsigned values
+33 --USE ieee.numeric_std.ALL;
+34 
+35 ENTITY testFIFO IS
+36 END testFIFO;
+37 
+38 ARCHITECTURE behavior OF testFIFO IS
+39 
+40 -- Component Declaration for the Unit Under Test (UUT)
+41 
+42 COMPONENT fifo_ent
+43 PORT(
+44 enr : IN std_logic;
+45 enw : IN std_logic;
+46 dataout : OUT std_logic_vector(3 downto 0);
+47 datain : IN std_logic_vector(3 downto 0);
+48 empty : OUT std_logic;
+49 full : OUT std_logic;
+50 clk : IN std_logic
+51 );
+52 END COMPONENT;
+53 
+54 
+55 --Inputs
+56 signal enr : std_logic := '0';
+57 signal enw : std_logic := '0';
+testFIFO.vhd Thu Sep 21 16:00:55 2023
+Page 2
+58 signal datain : std_logic_vector(3 downto 0) := (others => '0');
+59 signal clk : std_logic := '0';
+60 
+61 --Outputs
+62 signal dataout : std_logic_vector(3 downto 0);
+63 signal empty : std_logic;
+64 signal full : std_logic;
+65 
+66 -- Clock period definitions
+67 constant clk_period : time := 10 ns;
+68 
+69 BEGIN
+70 
+71 -- Instantiate the Unit Under Test (UUT)
+72 uut: fifo_ent PORT MAP (
+73 enr => enr,
+74 enw => enw,
+75 dataout => dataout,
+76 datain => datain,
+77 empty => empty,
+78 full => full,
+79 clk => clk
+80 );
+81 
+82 -- Clock process definitions
+83 clk_process :process
+84 begin
+85 clk <= '0';
+86 wait for clk_period/2;
+87 clk <= '1';
+88 wait for clk_period/2;
+89 end process;
+90 
+91 
+92 -- Stimulus process
+93 stim_proc: process
+94 begin
+95 
+96 enw<='1';
+97 datain<="1110";
+98 wait for 10 ns;
+99 datain<="1100";
+100 wait for 10 ns;
+101 datain<="1000";
+102 wait for 10 ns;
+103 datain<="0000";
+104 wait for 10 ns;
+105 datain<="1111";
+106 wait for 10 ns;
+107 datain<="0100";
+108 wait for 10 ns;
+109 datain<="0110";
+110 wait for 10 ns;
+111 datain<="0011";
+112 enw<='0';
+113 wait for 10 ns;
+114 
+testFIFO.vhd Thu Sep 21 16:00:55 2023
+Page 3
+115 enr<='1';
+116 
+117 
+118 wait;
+119 end process;
+120 
+121 END;
+122 
+fifo_ent.vhd Thu Sep 21 15:46:57 2023
+Page 1
+1 ----------------------------------------------------------------------------------
+2 -- Company: 
+3 -- Engineer: 
+4 -- 
+5 -- Create Date: 15:11:02 09/21/2023 
+6 -- Design Name: 
+7 -- Module Name: fifo_ent - Behavioral 
+8 -- Project Name: 
+9 -- Target Devices: 
+10 -- Tool versions: 
+11 -- Description: 
+12 --
+13 -- Dependencies: 
+14 --
+15 -- Revision: 
+16 -- Revision 0.01 - File Created
+17 -- Additional Comments: 
+18 --
+19 ----------------------------------------------------------------------------------
+20 library IEEE;
+21 use IEEE.STD_LOGIC_1164.ALL;
+22 use IEEE.STD_LOGIC_ARITH.ALL;
+23 use IEEE.STD_LOGIC_UNSIGNED.ALL;
+24 
+25 -- Uncomment the following library declaration if using
+26 -- arithmetic functions with Signed or Unsigned values
+27 --use IEEE.NUMERIC_STD.ALL;
+28 
+29 -- Uncomment the following library declaration if instantiating
+30 -- any Xilinx primitives in this code.
+31 --library UNISIM;
+32 --use UNISIM.VComponents.all;
+33 
+34 entity fifo_ent is
+35 Port ( enr : in STD_LOGIC;
+36 enw : in STD_LOGIC;
+37 dataout : out STD_LOGIC_VECTOR (3 downto 0);
+38 datain : in STD_LOGIC_VECTOR (3 downto 0);
+39 empty : out STD_LOGIC;
+40 full : out STD_LOGIC;
+41 clk : in STD_LOGIC);
+42 end fifo_ent;
+43 
+44 architecture Behavioral of fifo_ent is
+45 
+46 
+47 type memory_type is array(0 to 7) of std_logic_vector(3 downto 0);
+48 signal memory : memory_type:=(others => (others => '0'));
+49 signal readptr , writeptr : std_logic_vector(3 downto 0):= "0000";
+50 
+51 begin
+52 process(clk)
+53 begin
+54 if(clk'event and clk = '1' and enw = '1') then
+55 
+56 memory(conv_integer(writeptr))<= datain;
+57 writeptr <= writeptr + '1';
+fifo_ent.vhd Thu Sep 21 15:46:57 2023
+Page 2
+58 end if;
+59 
+60 if(clk'event and clk ='1' and enr ='1') then
+61 
+62 dataout <= memory(conv_integer(readptr));
+63 readptr <= readptr + '1';
+64 end if;
+65 if(readptr = "1000") then
+66 empty<='1';
+67 readptr<="0000";
+68 else
+69 empty<='0';
+70 end if;
+71 if(writeptr = "1000") then
+72 full<='1';
+73 writeptr<="0000";
+74 else
+75 full<='0';
+76 end if;
+77 end process;
+78 
+79 end Behavioral;
+80 
+81 
+# -- Design Name: FIFO Memory
+# -- Module Name: fifo - Behavioral 
+#
+# ___UCF file___
+#------------------------------------------------------------
+# clock pin for Basys2 Board
+NET "mclk" LOC = "B8"; # Bank = 0, Signal name = MCLK
+#NET "uclk" LOC = "M6"; # Bank = 2, Signal name = UCLK
+#NET "mclk" CLOCK_DEDICATED_ROUTE = FALSE;
+#NET "uclk" CLOCK_DEDICATED_ROUTE = FALSE;
+# Pin assignment for LEDs
+NET "mememp" LOC = "G1" ; # Bank = 3, Signal name = LD7
+NET "memfull" LOC = "P4" ; # Bank = 2, Signal name = LD6
+#NET "Led<5>" LOC = "N4" ; # Bank = 2, Signal name = LD5
+#NET "Led<4>" LOC = "N5" ; # Bank = 2, Signal name = LD4
+NET "dataout<3>" LOC = "G1" ; # Bank = 2, Signal name = LD3
+NET "dataout<2>" LOC = "P4" ; # Bank = 3, Signal name = LD2
+NET "dataout<1>" LOC = "N4" ; # Bank = 2, Signal name = LD1
+NET "dataout<0>" LOC = "N5" ; # Bank = 2, Signal name = LD0
+# Pin assignment for SWs
+NET "rd" LOC = "N3"; # Bank = 2, Signal name = SW7
+NET "wr" LOC = "E2"; # Bank = 3, Signal name = SW6 
+#NET "sw<5>" LOC = "F3"; # Bank = 3, Signal name = SW5
+#NET "sw<4>" LOC = "G3"; # Bank = 3, Signal name = SW4
+NET "datain<3>" LOC = "B4"; # Bank = 3, Signal name = SW3
+NET "datain<2>" LOC = "K3"; # Bank = 3, Signal name = SW2
+NET "datain<1>" LOC = "L3"; # Bank = 3, Signal name = SW1
+NET "datain<0>" LOC = "P11"; # Bank = 2, Signal name = SW0
+# Pin assignment for RESET SW
+NET "rst" LOC = "A7"; # Bank = 1, Signal name = BTN3
+#NET "btn<2>" LOC = "M4"; # Bank = 0, Signal name = BTN2
+#NET "btn<1>" LOC = "C11"; # Bank = 2, Signal name = BTN1
+#NET "btn<0>" LOC = "G12"; # Bank = 0, Signal name = BTN0
+#
+#------------------------------------------------------------
+Name of Designer: ADITYA CHAVHAN Roll No.: 404D016
+fde
+C
+CE
+D Q
+x
+x
+8 4
+8 4 RAM:1
+Mram_memory1
+port_we
+ENA
+RSTA
+port_clk
+port_addr
+port_din
+WEB
+ENB
+RSTB
+CLKB
+port_dualaddr
+DIB
+DOA
+port_dualdout and4b3
+readptr_cmp_eq0000_imp_readptr_cmp_eq00001
+I0
+I1
+I2
+I3
+O
+COUNT
+up COUNTER:1
+readptr1
+port_data port_q
+port_clken
+port_clk and4b3
+writeptr_cmp_eq0000_imp_writeptr_cmp_eq00001
+I0
+I1
+I2
+I3
+O
+COUNT
+up COUNTER:2
+writeptr1
+port_data port_q
+port_clken
+port_clk
+fifo_ent:1
+fifo_ent
+datain(3:0)
+clk
+enr
+enw
+dataout(3:0)
+empty
+full
+0 ns 200 ns 400 ns 600 ns 800 ns
+
+ -- Design Name: Keypad Interface
+ -- Module Name: keypad - Behavioral 
+--------------------------------------------------------------
+-- Name of Designer: Shubham Kulkarni Roll No.: 404031
+-- Date of Design: 01/09/2017
+-- Date of Verification: 01/09/2017
+-- Date of Testing: 01/09/2017
+--------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.numeric_std.all;
+use IEEE.std_logic_unsigned.all;
+entity keypad4_4 is
+ Port ( clk,rst : in STD_LOGIC;
+ row : in STD_LOGIC_VECTOR (3 downto 0);
+col : out STD_LOGIC_VECTOR (3 downto 0);
+ sw : in STD_LOGIC_VECTOR (3 downto 0);
+ seg_ctrl : out STD_LOGIC_VECTOR (3 downto 0);
+ display : out STD_LOGIC_VECTOR (6 downto 0));
+end keypad4_4;
+architecture Behavioral of keypad4_4 is
+signal temp : std_logic_vector( 2 downto 0);
+signal clk1 : std_logic;
+signal cdiv : std_logic_vector( 24 downto 0); -- 25 bit wide value ~50Hz = 
+20msec
+ 
+ -- "0100110001001011010000000" 
+ 
+ begin
+P1: process(clk,rst) -- System clk 
+ begin 
+-- Deriving 20 ms clk
+ if rst = '1' then
+ cdiv <= (others=>'0');
+ 
+ 
+ elsif clk'event and clk = '1' then 
+ cdiv <= cdiv + '1' ; 
+ 
+ if (cdiv = "0100110001001011010000000") then -- 50 Hz @ 20 ms or (200
+ms?)
+-- 011110100001001000000
+ -- 500 Hz @ 2 ms
+ clk1 <= '1'; 
+ cdiv <= (others=>'0');
+ 
+ else 
+ clk1 <= '0';
+ end if; 
+ end if; 
+ end process; 
+--------------------------------------------------------------
+P2: process(clk1,rst) -- using Derived clk 
+ begin 
+ if rst = '1' then
+ temp <= (others=> '0');
+ seg_ctrl <= "0000";
+ 
+elsif clk1'event and clk1 = '1' then
+ temp <= temp + 1;
+ seg_ctrl <= sw ;
+ case temp is 
+--------------------------------------------------------------
+ when "000" =>
+ col <= "1110" ; 
+ -- *** C1 ***
+ 
+when "001" =>
+ if row = "1110" then 
+-- R1 
+ display <= "1111001" ; 
+-- 1
+-- *** "gfedcba" ***
+ 
+ elsif row = "1101" then 
+ -- R2
+ display <= "0011001" ; 
+-- 4
+ 
+ elsif row = "1011" then 
+ -- R3
+ display <= "1111000" ; 
+-- 7 
+ 
+ elsif row = "0111" then 
+ -- R4
+ display <= "1000000" ; 
+-- 0
+ end if;
+ 
+--------------------------------------------------------------
+ when "010" =>
+ col <= "1101" ; 
+ -- *** C2 ***
+ 
+ when "011" =>
+ 
+ if row = "1110" then 
+ -- R1 
+ display <= "0100100" ; 
+-- 2
+elsif row = "1101" then 
+ -- R2
+ display <= "0010010" ; 
+-- 5
+ 
+ elsif row = "1011" then 
+ -- R3
+ display <= "0000000" ; 
+-- 8
+ 
+ elsif row = "0111" then 
+ -- R4
+ display <= "0001110" ; 
+-- F
+ 
+ end if;
+ 
+--------------------------------------------------------------
+ when "100" =>
+ col <= "1011" ; 
+ -- *** C3 ***
+ 
+ when "101" =>
+ if row = "1110" then 
+-- R1 
+ display <= "0110000" ; 
+-- 3
+elsif row = "1101" then 
+ -- R2
+ display <= "0000010" ; 
+-- 6
+ 
+ elsif row = "1011" then 
+ -- R3
+ display <= "0010000" ; 
+-- 9 
+ 
+ elsif row = "0111" then 
+ -- R4
+ display <= "0000110" ; 
+-- E
+ 
+ end if;
+ 
+--------------------------------------------------------------
+ when "110" =>
+ col <= "0111" ; 
+ -- *** C4 ***
+ 
+ when "111" =>
+ if row = "1110" then 
+-- R1 
+ display <= "0001000" ; 
+-- A
+elsif row = "1101" then 
+ -- R2
+ display <= "0000011" ; 
+-- B
+ 
+ elsif row = "1011" then 
+ -- R3
+ display <= "1000110"; 
+-- C 
+ 
+ elsif row = "0111" then 
+ -- R4
+ display <= "0100001" ; 
+-- D
+ 
+ end if;
+--------------------------------------------------------------
+ 
+ WHEN OTHERS =>
+ display <= "0000000"; 
+ 
+ END CASE; 
+ end if; 
+ END PROCESS; 
+end Behavioral;
+-- KEYPAD LAYOUT
+-- 1 2 3
+A
+ 
+-- 4 5 6
+B
+ 
+-- 7 8 9
+C
+ 
+-- 0 F E
+D
+========================================================================= 
+* Final Report * 
+========================================================================= 
+Final Results 
+RTL Top Level Output File Name : lcd.ngr 
+Top Level Output File Name : lcd 
+Output Format : NGC 
+Optimization Goal : Speed 
+Keep Hierarchy : No 
+Design Statistics 
+# IOs : 13 
+Cell Usage : 
+# BELS : 133 
+# GND : 1 
+# INV : 3 
+# LUT1 : 20 
+# LUT2 : 25 
+# LUT3 : 3 
+# LUT4 : 25 
+# MUXCY : 32 
+# MUXF5 : 2 
+# VCC : 1 
+# XORCY : 21 
+# FlipFlops/Latches : 75 
+# FDC : 42 
+# FDE : 1 
+# FDP : 1 
+# LD : 31 
+# Clock Buffers : 3 
+# BUFG : 2 
+# BUFGP : 1 
+# IO Buffers : 12 
+# IBUF : 1 
+# OBUF : 11 
+========================================================================= 
+# -- Design Name: LCD Interface
+# -- Module Name: lcd_sk - Behavioral 
+#
+# ___UCF file___
+#------------------------------------------------------------
+# Pin assignment for ___RESET SWs___
+NET "rst" LOC = "A7"; # Bank = 1, Signal name = BTN3
+#NET " " LOC = "M4"; # Bank = 0, Signal name = BTN2
+#NET " " LOC = "C11"; # Bank = 2, Signal name = BTN1
+#NET " " LOC = "G12"; # Bank = 0, Signal name = BTN0
+## Loop Back only tested signals ___connect keypad, lcd___
+#NET "PIO<72>" LOC = "B2" | DRIVE = 2 | PULLUP ; # Bank = 1, Signal
+name = JA1
+#NET "PIO<73>" LOC = "A3" | DRIVE = 2 | PULLUP ; # Bank = 1, Signal
+name = JA2
+#NET "PIO<74>" LOC = "J3" | DRIVE = 2 | PULLUP ; # Bank = 1, Signal
+name = JA3
+#NET "PIO<75>" LOC = "B5" | DRIVE = 2 | PULLUP ; # Bank = 1, Signal
+name = JA4
+# ___LCD Control___
+NET "lcd_rs" LOC = "C6" | DRIVE = 2 | PULLUP ; # Bank = 1, Signal name 
+= JB1
+NET "lcd_rw" LOC = "B6" | DRIVE = 2 | PULLUP ; # Bank = 1, Signal name 
+= JB2
+NET "lcd_en" LOC = "C5" | DRIVE = 2 | PULLUP ; # Bank = 1, Signal name 
+= JB3
+#NET "row<0>" LOC = "B7" | DRIVE = 2 | PULLUP ; # Bank = 1, Signal name 
+= JB4
+# ___LCD Data Lines___
+NET "lcd_data<7>" LOC = "A9" | DRIVE = 2 | PULLUP ; # Bank = 1, Signal 
+name = JC1
+NET "lcd_data<6>" LOC = "B9" | DRIVE = 2 | PULLUP ; # Bank = 1, Signal 
+name = JC2
+NET "lcd_data<5>" LOC = "A10" | DRIVE = 2 | PULLUP ; # Bank = 1, Signal 
+name = JC3
+NET "lcd_data<4>" LOC = "C9" | DRIVE = 2 | PULLUP ; # Bank = 1, Signal 
+name = JC4
+# Name of Designer: ADITYA CHAVHAN Roll No.: 404D016
+#------------------------------------------------------------
+# clock pin for Basys2 Board
+NET "mclk" LOC = "B8"; # Bank = 0, Signal name = MCLK
+#NET "uclk" LOC = "M6"; # Bank = 2, Signal name = UCLK
+#NET "mclk" CLOCK_DEDICATED_ROUTE = FALSE;
+#NET "uclk" CLOCK_DEDICATED_ROUTE = FALSE;
+NET "lcd_data<3>" LOC = "C12" | DRIVE = 2 | PULLUP ; # Bank = 1, Signal 
+name = JD1
+NET "lcd_data<2>" LOC = "A13" | DRIVE = 2 | PULLUP ; # Bank = 2, Signal 
+name = JD2
+NET "lcd_data<1>" LOC = "C13" | DRIVE = 2 | PULLUP ; # Bank = 1, Signal 
+name = JD3
+NET "lcd_data<0>" LOC = "D12" | DRIVE = 2 | PULLUP ; # Bank = 2, Signal 
+name = JD4
+entity lcd is
+ Port ( mclk,rst : in STD_LOGIC;
+ lcd_data : out STD_LOGIC_VECTOR (7 downto 0);
+ lcd_rw : out STD_LOGIC;
+ lcd_rs : out STD_LOGIC;
+ lcd_en : out STD_LOGIC);
+end lcd;
+architecture Behavioral of lcd is
+ signal cnt : std_logic_vector(20 downto 0);
+ signal clk : std_logic;
+type states
+is(rst_state,first_cwd,first_cwd1,second_cwd,second_cwd1,
+third_cwd,third_cwd1,fourth_cwd,fourth_cwd1,
+first_char,first_char1,second_char,second_char1,third_char,
+third_char1,fourth_char,fourth_char1,fifth_char,fifth_char1,
+sixth_char,sixth_char1,seventh_char,seventh_char1);
+ 
+ signal p_state,n_state: states;
+begin
+clk_div : process(mclk,rst) -- system clk
+ begin
+if rst = '1' then
+cnt <= (others => '0');
+elsif mclk'event and mclk = '1' then
+cnt <= cnt + '1';
+if ( cnt = "011110100001001000000" ) then -- 20bit 50 Hz 
+@ 20 msec ~ 1M
+-- Design Name: LCD Interface
+-- Module Name: lcd - Behavioral
+---------------------------------------------------------------
+-- Date of Design : 19/09/2023
+-- Date of Verification : 19/09/2023
+-- Date of Testing : 19/09/2023
+---------------------------------------------------------------
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
+use IEEE.std_logic_unsigned.all;
+Name of Designer: ADITYA CHAVHAN Roll No.: 404D016
+-- 0100110001001011010000000 --
+25bit 5 Hz @ 200 msec ~ 10M
+clk <= '1';
+cnt <= (others =>'0');
+else 
+clk <= '0';
+ end if;
+end if;
+end process;
+mem_elemt:process(clk,rst)
+begin
+if rst = '1' then
+p_state <= rst_state;
+elsif clk'event and clk = '1' then
+p_state <= n_state;
+end if;
+end process;
+next_state:process(p_state)
+begin
+ case p_state is
+---------- Sending Commands ----------
+when rst_state => --
+send 1st Command
+lcd_rw <= '0';
+lcd_rs <= '0';
+lcd_en <= '0';
+ n_state <= first_cwd;
+lcd_data <= "00111100"; -- 3CH
+when first_cwd =>
+ lcd_rw <= '0';
+lcd_rs <= '0';
+lcd_en <= '1';
+ n_state <= first_cwd1;
+lcd_data <= "00111100"; -- 3CH___8 bit mode 2 lines 5x8 
+dots
+when first_cwd1 => --
+send 2nd Command
+lcd_rw <= '0';
+lcd_rs <= '0';
+lcd_en <= '0';
+ n_state <= second_cwd;
+lcd_data <= "00001100"; -- 0CH
+when second_cwd =>
+lcd_rw <= '0';
+lcd_rs <= '0';
+lcd_en <= '1';
+ n_state <= second_cwd1;
+lcd_data <= "00001100"; -- 0CH___Display on Cursor off
+when second_cwd1 => --
+send 3rd Command
+lcd_rw <= '0';
+lcd_rs <= '0';
+lcd_en <= '0';
+ n_state <= third_cwd;
+ lcd_data <= "00000001"; -- 01H
+when third_cwd =>
+lcd_rw <= '0';
+lcd_rs <= '0';
+lcd_en <= '1';
+ n_state <= third_cwd1;
+lcd_data <= "00000001"; -- 01H___Clear Display
+when third_cwd1 => --
+send 4th Command
+lcd_rw <= '0';
+lcd_rs <= '0';
+lcd_en <= '0';
+ n_state <= fourth_cwd;
+lcd_data <= "00000010"; -- 02H
+when fourth_cwd =>
+lcd_rw <= '0';
+lcd_rs <= '0';
+lcd_en <= '1';
+ n_state <= fourth_cwd1;
+lcd_data <= "00000010"; -- 02H___Return Cursor to Home
+---------- Sending Characters ----------
+when fourth_cwd1 => --
+send 1st Character Data
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '0';
+ n_state <= first_char;
+lcd_data <= "01010011"; -- S
+when first_char =>
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '1';
+ n_state <= first_char1;
+lcd_data <= "01010011"; -- S
+when first_char1 => --
+send 2nd Character Data
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '0';
+ n_state <= second_char;
+lcd_data <= "01001000"; --
+H
+when second_char =>
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '1';
+ n_state <= second_char1;
+lcd_data <= "01001000"; --
+H
+when second_char1 => --
+send 3rd Character Data
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '0';
+ n_state <= third_char;
+lcd_data <= "01010101"; --
+U
+when third_char =>
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '1';
+ n_state <= third_char1;
+lcd_data <= "01010101"; --
+U
+when third_char1 => --
+send 4th Character Data
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '0';
+ n_state <= fourth_char;
+lcd_data <= "01000010"; --
+B
+when fourth_char =>
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '1';
+ n_state <= fourth_char1;
+lcd_data <= "01000010"; --
+B
+when fourth_char1 => --
+send 5th Character Data
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '0';
+ n_state <= fifth_char;
+lcd_data <= "01001000"; --
+H
+when fifth_char =>
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '1';
+ n_state <= fifth_char1;
+lcd_data <= "01001000"; -- H
+when fifth_char1 => --
+send 6th Character Data
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '0';
+ n_state <= sixth_char;
+lcd_data <= "01000001"; -- A
+when sixth_char =>
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '1';
+ n_state <= sixth_char1;
+lcd_data <= "01000001"; -- A
+when sixth_char1 => --
+send 7th Character Data
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '0';
+ n_state <= seventh_char;
+lcd_data <= "01001101"; -- M
+when seventh_char =>
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '1';
+ n_state <= seventh_char1;
+lcd_data <= "01001101"; -- M
+when others =>
+NULL;
+ end case;
+end process;
+end Behavioral;
+entity lcd is
+ Port ( clk,rst : in STD_LOGIC;
+ lcd_data : out STD_LOGIC_VECTOR (7 downto 0);
+ lcd_rw : out STD_LOGIC;
+ lcd_rs : out STD_LOGIC;
+ lcd_en : out STD_LOGIC);
+end lcd;
+architecture Behavioral of lcd is
+-- signal cnt : std_logic_vector(20 downto 0);
+-- signal clk : std_logic;
+type states 
+is(rst_state,first_cwd,first_cwd1,second_cwd,second_cwd1,
+third_cwd,third_cwd1,fourth_cwd,fourth_cwd1,
+first_char,first_char1,second_char,second_char1,third_char,
+third_char1,fourth_char,fourth_char1,fifth_char,fifth_char1,
+sixth_char,sixth_char1,seventh_char,seventh_char1);
+ 
+ signal p_state,n_state: states;
+begin
+-- clk_div : process(mclk,rst) -- system clk 
+-- begin
+--
+-- if rst = '1' then
+-- cnt <= (others => '0');
+--
+-- elsif mclk'event and mclk = '1' then
+-- cnt <= cnt + '1';
+--
+-- if ( cnt = "011110100001001000000" ) then -- 20 bit 50 
+Hz @ 20msec ~ 1M
+-- Design Name: LCD Interface
+-- Module Name: fortb_lcd - Behavioral
+---------------------------------------------------------------
+-- Date of Design : 19/09/2023
+-- Date of Verification : 19/09/2023
+-- Date of Testing : 19/09/2023
+---------------------------------------------------------------
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
+use IEEE.std_logic_unsigned.all;
+Name of Designer: ADITYA CHAVHAN Roll No.: 404D016
+-- -- 0100110001001011010000000 -- 25 
+bit 5 Hz @ 200msec ~10M
+--
+-- clk <= '1';
+-- cnt <= (others =>'0');
+--
+-- else 
+-- clk <= '0';
+-- end if;
+-- end if;
+-- end process;
+mem_elemt:process(clk,rst)
+begin
+if rst = '1' then
+p_state <= rst_state;
+elsif clk'event and clk = '1' then
+p_state <= n_state;
+end if;
+end process;
+next_state:process(p_state)
+begin
+ case p_state is
+---------- Sending Commands ----------
+when rst_state => --
+send 1st Command
+lcd_rw <= '0';
+lcd_rs <= '0';
+lcd_en <= '0';
+ n_state <= first_cwd;
+lcd_data <= "00111100"; -- 3CH
+when first_cwd =>
+ lcd_rw <= '0';
+lcd_rs <= '0';
+lcd_en <= '1';
+ n_state <= first_cwd1;
+lcd_data <= "00111100"; -- 3CH___8 bit mode 2 lines 5x8 
+dots
+when first_cwd1 => --
+send 2nd Command
+lcd_rw <= '0';
+lcd_rs <= '0';
+lcd_en <= '0';
+ n_state <= second_cwd;
+lcd_data <= "00001100"; -- 0CH
+when second_cwd =>
+lcd_rw <= '0';
+lcd_rs <= '0';
+lcd_en <= '1';
+ n_state <= second_cwd1;
+lcd_data <= "00001100"; -- 0CH___Display on Cursor off
+when second_cwd1 => --
+send 3rd Command
+lcd_rw <= '0';
+lcd_rs <= '0';
+lcd_en <= '0';
+ n_state <= third_cwd;
+ lcd_data <= "00000001"; -- 01H
+when third_cwd =>
+lcd_rw <= '0';
+lcd_rs <= '0';
+lcd_en <= '1';
+ n_state <= third_cwd1;
+lcd_data <= "00000001"; -- 01H___Clear Display
+when third_cwd1 => --
+send 4th Command
+lcd_rw <= '0';
+lcd_rs <= '0';
+lcd_en <= '0';
+ n_state <= fourth_cwd;
+lcd_data <= "00000010"; -- 02H
+when fourth_cwd =>
+lcd_rw <= '0';
+lcd_rs <= '0';
+lcd_en <= '1';
+ n_state <= fourth_cwd1;
+lcd_data <= "00000010"; -- 02H___Return Cursor to Home
+---------- Sending Characters ----------
+when fourth_cwd1 => --
+send 1st Character Data
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '0';
+ n_state <= first_char;
+lcd_data <= "01010011"; -- S
+when first_char =>
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '1';
+ n_state <= first_char1;
+lcd_data <= "01010011"; -- S
+when first_char1 => --
+send 2nd Character Data
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '0';
+ n_state <= second_char;
+lcd_data <= "01001000"; --
+H
+when second_char =>
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '1';
+ n_state <= second_char1;
+lcd_data <= "01001000"; --
+H
+when second_char1 => --
+send 3rd Character Data
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '0';
+ n_state <= third_char;
+lcd_data <= "01010101"; --
+U
+when third_char =>
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '1';
+ n_state <= third_char1;
+lcd_data <= "01010101"; --
+U
+when third_char1 => --
+send 4th Character Data
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '0';
+ n_state <= fourth_char;
+lcd_data <= "01000010"; --
+B
+when fourth_char =>
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '1';
+ n_state <= fourth_char1;
+lcd_data <= "01000010"; --
+B
+when fourth_char1 => --
+send 5th Character Data
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '0';
+ n_state <= fifth_char;
+lcd_data <= "01001000"; --
+H
+when fifth_char =>
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '1';
+ n_state <= fifth_char1;
+lcd_data <= "01001000"; --
+H
+when fifth_char1 => --
+send 6th Character Data
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '0';
+ n_state <= sixth_char;
+lcd_data <= "01000001"; -- A
+when sixth_char =>
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '1';
+ n_state <= sixth_char1;
+lcd_data <= "01000001"; -- A
+when sixth_char1 => --
+send 7th Character Data
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '0';
+ n_state <= seventh_char;
+lcd_data <= "01001101"; -- M
+when seventh_char =>
+lcd_rw <= '0';
+lcd_rs <= '1';
+lcd_en <= '1';
+ n_state <= seventh_char1;
+lcd_data <= "01001101"; -- M
+when others =>
+NULL;
+ end case;
+end process;
+end Behavioral;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+ENTITY fortb_lcdtb2 IS
+END fortb_lcdtb2;
+ARCHITECTURE behavior OF fortb_lcdtb2 IS
+ -- Component Declaration for the Unit Under Test (UUT)
+ COMPONENT lcd
+ PORT(
+ clk : IN std_logic;
+ rst : IN std_logic;
+ lcd_data : OUT std_logic_vector(7 downto 0);
+ lcd_rw : OUT std_logic;
+ lcd_rs : OUT std_logic;
+ lcd_en : OUT std_logic
+ );
+ END COMPONENT;
+ 
+ --Inputs
+ signal clk : std_logic := '0';
+ signal rst : std_logic := '0';
+--Outputs
+ signal lcd_data : std_logic_vector(7 downto 0);
+ signal lcd_rw : std_logic;
+ signal lcd_rs : std_logic;
+ signal lcd_en : std_logic;
+ -- Clock period definitions
+ constant clk_period : time := 10 ns;
+BEGIN
+-- Instantiate the Unit Under Test (UUT)
+ uut: lcd PORT MAP (
+ clk => clk,
+ rst => rst,
+ lcd_data => lcd_data,
+ lcd_rw => lcd_rw,
+ lcd_rs => lcd_rs,
+ lcd_en => lcd_en
+--------------------------- Test Bench -------------------------------
+-- Company: SCOE E&TC
+--
+-- Create Date: 03:37:05 10/09/2023
+-- Design Name:
+-- Module Name: E:/Xilinx codes/fortb_LCD/fortb_lcd/fortb_lcdtb2.vhd
+-- Project Name: fortb_lcd
+-----------------------------------------------------------------------
+Name of Designer: ADITYA CHAVHAN Roll No.: 404D016
+ );
+ -- Clock process definitions
+ clk_process :process
+ begin
+clk <= '0';
+wait for clk_period/2;
+clk <= '1';
+wait for clk_period/2;
+ end process;
+ -- Stimulus process
+ stim_proc: process
+ begin
+ 
+rst <= '1';
+wait for 10 ns;
+rst <= '0';
+wait for 200 ns;
+ 
+ wait;
+ end process;
+END;
